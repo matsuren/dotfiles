@@ -1,6 +1,7 @@
 Setup vim, bash, and tmux.
 
 ```bash
+# Capslock to control, /etc/default/keyboard  XKBOPTIONS="ctrl:nocaps"
 sudo apt install vim tmux tree
 
 # Better not to add at the moment. purity looks good.
@@ -35,3 +36,10 @@ bind '"\C-n": history-search-forward'
 bind '"\C-p": history-search-backward'
 source ~/dev/LS_COLORS/lscolors.sh
 ```
+
+
+Tips for Mozc Japanese input
+- DirectInput: Activate IME
+- Precomposition: Deactivate IME
+- Composition: Deactivate IME
+- Conversion: Deactivate IME
