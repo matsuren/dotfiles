@@ -4,9 +4,8 @@ Setup vim, bash, and tmux.
 # Capslock to control, /etc/default/keyboard  XKBOPTIONS="ctrl:nocaps"
 sudo apt install vim tmux tree
 
-# Better not to add at the moment. purity looks good.
-# Bash prompt. This replaces ~/.bashrc. Check https://github.com/ohmybash/oh-my-bash before running
-# bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)"
+mkdir ~/dev
+git clone --depth=1 https://github.com/romkatv/gitstatus.git ~/dev/gitstatus
 
 git clone --depth=1 https://github.com/amix/vimrc.git ~/.vim_runtime
 sh ~/.vim_runtime/install_awesome_vimrc.sh
@@ -35,6 +34,7 @@ export EDITOR=vim
 bind '"\C-n": history-search-forward'
 bind '"\C-p": history-search-backward'
 source ~/dev/LS_COLORS/lscolors.sh
+source ~/dev/gitstatus/gitstatus.prompt.sh
 ```
 
 
