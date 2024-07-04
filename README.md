@@ -5,9 +5,13 @@
 gsettings set org.gnome.desktop.interface gtk-enable-primary-paste false
 
 # Install packages
-sudo apt install zsh git fzf curl htop tmux ibus-mozc
+sudo apt install zsh git fzf curl htop tmux ibus-mozc xsel
 ibus restart
 sudo snap install code --classic
+
+# Install nerd fonts for lualine.nvim
+mkdir -p ~/.local/share/fonts
+cd ~/.local/share/fonts && curl -fLO https://github.com/ryanoasis/nerd-fonts/raw/HEAD/patched-fonts/DroidSansMono/DroidSansMNerdFont-Regular.otf
 
 mkdir ~/dev
 cd ~/dev

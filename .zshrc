@@ -12,10 +12,17 @@ if [ ! -d "$NVIM_DIR" ]; then
     sudo rm -rf /opt/nvim
     sudo tar -C /opt -xzf nvim-linux64.tar.gz
     rm nvim-linux64.tar.gz
+    git clone https://github.com/matsuren/nvim-config.git ~/.config/nvim
 fi
 export PATH="$PATH:$NVIM_DIR/bin"
 alias vim="nvim"
 
+# Add tpm
+if [ ! -d "$HOME/.tmux/plugins/tpm" ]; then
+    echo "Installing tpm,,,,"
+    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+    ln -s ~/dev/dotfiles/.tmux.conf ~/.tmux.conf
+fi
 # fzf usage apt-cache show fzf
 source /usr/share/doc/fzf/examples/key-bindings.zsh
 source /usr/share/doc/fzf/examples/completion.zsh
