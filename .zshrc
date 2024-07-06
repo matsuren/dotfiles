@@ -27,6 +27,32 @@ fi
 # fzf usage apt-cache show fzf
 source /usr/share/doc/fzf/examples/key-bindings.zsh
 source /usr/share/doc/fzf/examples/completion.zsh
+export FZF_DEFAULT_OPTS="--height 50% --preview 'bat --color=always --theme=\"Nord\" {}'"
+export FZF_CTRL_R_OPTS="--preview 'echo {}'"
+# Use fd (https://github.com/sharkdp/fd) for listing path candidates.
+# - The first argument to the function ($1) is the base path to start traversal
+# - See the source code (completion.{bash,zsh}) for the details.
+_fzf_compgen_path() {
+  fd --hidden --follow --exclude ".git" . "$1"
+}
+# Use fd to generate the list for directory completion
+_fzf_compgen_dir() {
+  fd --type d --hidden --follow --exclude ".git" . "$1"
+}
+# Advanced customization of fzf options via _fzf_comprun function
+# - The first argument to the function is the name of the command.
+# - You should make sure to pass the rest of the arguments to fzf.
+_fzf_comprun() {
+  local command=$1
+  shift
+
+  case "$command" in
+    cd)           fzf --preview 'tree -C {} | head -200'   "$@" ;;
+    export|unset) fzf --preview "eval 'echo \$'{}"         "$@" ;;
+    ssh)          fzf --preview 'dig {}'                   "$@" ;;
+    *)            fzf --preview 'bat --color=always --theme=Nord {}' "$@" ;;
+  esac
+}
 
 # Rust
 source "$HOME/.cargo/env"
@@ -69,6 +95,7 @@ abbr -q -S gst="git status"
 abbr -q -S gl="git log"
 abbr -q -S ga="git add -p"
 abbr -q -S gp="git push origin HEAD"
+abbr -q -S ggrep="git grep --line-number '' | fzf --height 80% --delimiter : --preview 'bat --style=full --color=always --theme=\"Nord\" --highlight-line {2} {1}' --preview-window '~3,+{2}+3/2'"
 # load zsh-abbr, then
 
 chroma_single_word() {
