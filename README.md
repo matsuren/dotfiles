@@ -5,9 +5,12 @@
 gsettings set org.gnome.desktop.interface gtk-enable-primary-paste false
 
 # Install packages
-sudo apt install zsh git fzf curl htop tmux ibus-mozc xsel
+sudo apt install zsh git curl htop tmux ibus-mozc xsel
 ibus restart
 sudo snap install code --classic
+# Better to install newer version of fzf. 0.53.0 (c4a9ccd) now
+git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+~/.fzf/install
 
 # Install nerd fonts for lualine.nvim
 mkdir -p ~/.local/share/fonts
