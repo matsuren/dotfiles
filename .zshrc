@@ -49,6 +49,12 @@ zinit light zsh-users/zsh-autosuggestions
 zinit light z-shell/F-Sy-H
 bindkey '^[[1;5D' backward-word
 bindkey '^[[1;5C' forward-word
+# sharkdp/fd
+zinit ice as"command" from"gh-r" mv"fd* -> fd" pick"fd/fd"
+zinit light sharkdp/fd
+# sharkdp/bat
+zinit ice as"command" from"gh-r" mv"bat* -> bat" pick"bat/bat"
+zinit light sharkdp/bat
 
 # Tab completion Note: ctrl+C to cancel
 bindkey '^[[Z' reverse-menu-complete
