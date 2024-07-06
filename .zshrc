@@ -57,6 +57,7 @@ zinit light olets/zsh-abbr
 abbr -q -S gst="git status"
 abbr -q -S gl="git log"
 abbr -q -S ga="git add -p"
+abbr -q -S gp="git push origin HEAD"
 # load zsh-abbr, then
 
 chroma_single_word() {
