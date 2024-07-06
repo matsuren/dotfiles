@@ -17,23 +17,54 @@ if [ ! -d "$NVIM_DIR" ]; then
 fi
 export PATH="$PATH:$NVIM_DIR/bin"
 alias vim="nvim"
+export EDITOR="nvim"
+export VISUAL="nvim"
 
-# Add tpm
-if [ ! -d "$HOME/.tmux/plugins/tpm" ]; then
-    echo "Installing tpm,,,,"
-    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-    ln -s ~/dev/dotfiles/.tmux.conf ~/.tmux.conf
-fi
-# fzf usage apt-cache show fzf
-source /usr/share/doc/fzf/examples/key-bindings.zsh
-source /usr/share/doc/fzf/examples/completion.zsh
-export FZF_DEFAULT_OPTS="--height 50% --preview 'bat --color=always --theme=\"Nord\" {}'"
-export FZF_CTRL_R_OPTS="--preview 'echo {}'"
+# --- basic config ---
+# Rust
+source "$HOME/.cargo/env"
+# Tab completion Note: ctrl+C to cancel
+bindkey '^[[Z' reverse-menu-complete
+zstyle ':completion:*' menu select
+# Turn off all beeps
+unsetopt BEEP
+
+# --- zinit ----
+# theme
+zinit ice compile'(pure|async).zsh' pick'async.zsh' src'pure.zsh'
+zinit light sindresorhus/pure
+zstyle :prompt:pure:path color green
+zstyle :prompt:pure:prompt:success color cyan
+
+# color
+zinit ice atclone"dircolors -b LS_COLORS > clrs.zsh" \
+    atpull'%atclone' pick"clrs.zsh" nocompile'!' \
+    atload'zstyle ":completion:*" list-colors “${(s.:.)LS_COLORS}”'
+zinit light trapd00r/LS_COLORS
+alias ls="ls --color=auto"
+
+# command usefull
+zinit light zsh-users/zsh-autosuggestions
+zinit light z-shell/F-Sy-H  # Better than zsh-syntax-highlighting for bracket
+bindkey '^[[1;5D' backward-word
+bindkey '^[[1;5C' forward-word
+# sharkdp/fd
+zinit ice as"command" from"gh-r" mv"fd* -> fd" pick"fd/fd"
+zinit light sharkdp/fd
+# sharkdp/bat
+zinit ice as"command" from"gh-r" mv"bat* -> bat" pick"bat/bat"
+zinit light sharkdp/bat
+
+# fzf settings
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+export FZF_DEFAULT_COMMAND='fd --type f --color=always'
+export FZF_DEFAULT_OPTS="--ansi --layout=reverse --tmux 80% --preview '(bat --color=always --theme=Nord {})'"
+export FZF_CTRL_R_OPTS="--preview 'echo {} | fold -s'"
 # Use fd (https://github.com/sharkdp/fd) for listing path candidates.
 # - The first argument to the function ($1) is the base path to start traversal
 # - See the source code (completion.{bash,zsh}) for the details.
 _fzf_compgen_path() {
-  fd --hidden --follow --exclude ".git" . "$1"
+  fd --type f --hidden --follow --color=always --exclude ".git" . "$1"
 }
 # Use fd to generate the list for directory completion
 _fzf_compgen_dir() {
@@ -54,65 +85,24 @@ _fzf_comprun() {
   esac
 }
 
-# Rust
-source "$HOME/.cargo/env"
-
-# theme
-zinit ice compile'(pure|async).zsh' pick'async.zsh' src'pure.zsh'
-zinit light sindresorhus/pure
-zstyle :prompt:pure:path color green
-zstyle :prompt:pure:prompt:success color cyan
-
-# color
-zinit ice atclone"dircolors -b LS_COLORS > clrs.zsh" \
-    atpull'%atclone' pick"clrs.zsh" nocompile'!' \
-    atload'zstyle ":completion:*" list-colors “${(s.:.)LS_COLORS}”'
-zinit light trapd00r/LS_COLORS
-alias ls="ls --color=auto"
-
-# command usefull
-zinit light zsh-users/zsh-autosuggestions
-zinit light z-shell/F-Sy-H
-bindkey '^[[1;5D' backward-word
-bindkey '^[[1;5C' forward-word
-# sharkdp/fd
-zinit ice as"command" from"gh-r" mv"fd* -> fd" pick"fd/fd"
-zinit light sharkdp/fd
-# sharkdp/bat
-zinit ice as"command" from"gh-r" mv"bat* -> bat" pick"bat/bat"
-zinit light sharkdp/bat
-
-# Tab completion Note: ctrl+C to cancel
-bindkey '^[[Z' reverse-menu-complete
-zstyle ':completion:*' menu select
-
-# Turn off all beeps
-unsetopt BEEP
-
 # abbr
 zinit light olets/zsh-abbr
 abbr -q -S gst="git status"
 abbr -q -S gl="git log"
 abbr -q -S ga="git add -p"
 abbr -q -S gp="git push origin HEAD"
-abbr -q -S ggrep="git grep --line-number '' | fzf --height 80% --delimiter : --preview 'bat --style=full --color=always --theme=\"Nord\" --highlight-line {2} {1}' --preview-window '~3,+{2}+3/2'"
+abbr -q -S ggrep="git grep --line-number '' | fzf --height 80% --delimiter : --preview 'bat --style=full --color=always --theme=Nord --highlight-line {2} {1}' --preview-window '~3,+{2}+3/2'"
 # load zsh-abbr, then
-
 chroma_single_word() {
   (( next_word = 2 | 8192 ))
-
   local __first_call="$1" __wrd="$2" __start_pos="$3" __end_pos="$4"
   local __style
-
   (( __first_call )) && { __style=${FAST_THEME_NAME}alias }
   [[ -n "$__style" ]] && (( __start=__start_pos-${#PREBUFFER}, __end=__end_pos-${#PREBUFFER}, __start >= 0 )) && reply+=("$__start $__end ${FAST_HIGHLIGHT_STYLES[$__style]}")
-
   (( this_word = next_word ))
   _start_pos=$_end_pos
-
   return 0
 }
-
 register_single_word_chroma() {
   local word=$1
   if [[ -x $(command -v $word) ]] || [[ -n $FAST_HIGHLIGHT["chroma-$word"] ]]; then
@@ -122,13 +112,19 @@ register_single_word_chroma() {
   FAST_HIGHLIGHT+=( "chroma-$word" chroma_single_word )
   return 0
 }
-
 if [[ -n $FAST_HIGHLIGHT ]]; then
   for abbr in ${(f)"$(abbr list-abbreviations)"}; do
     if [[ $abbr != *' '* ]]; then
       register_single_word_chroma ${(Q)abbr}
     fi
   done
+fi
+
+# Add tpm
+if [ ! -d "$HOME/.tmux/plugins/tpm" ]; then
+    echo "Installing tpm,,,,"
+    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+    ln -s ~/dev/dotfiles/.tmux.conf ~/.tmux.conf
 fi
 
 # history
@@ -164,3 +160,5 @@ setopt inc_append_history
 setopt share_history
 setopt hist_reduce_blanks
 setopt hist_no_store
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
