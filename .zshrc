@@ -12,7 +12,8 @@ if [ ! -d "$NVIM_DIR" ]; then
     sudo rm -rf /opt/nvim
     sudo tar -C /opt -xzf nvim-linux64.tar.gz
     rm nvim-linux64.tar.gz
-    git clone https://github.com/matsuren/nvim-config.git ~/.config/nvim
+    git clone git@github.com:matsuren/nvim-config.git ~/.config/nvim
+    # git clone https://github.com/matsuren/nvim-config.git ~/.config/nvim
 fi
 export PATH="$PATH:$NVIM_DIR/bin"
 alias vim="nvim"
@@ -46,7 +47,22 @@ alias ls="ls --color=auto"
 # command usefull
 zinit light zsh-users/zsh-autosuggestions
 zinit light zsh-users/zsh-syntax-highlighting
+bindkey '^[[1;5D' backward-word
+bindkey '^[[1;5C' forward-word
+# Turn off all beeps
+unsetopt BEEP
 
+# abbr
+zinit light olets/zsh-abbr
+abbr -q -S gst="git status"
+abbr -q -S gl="git log"
+abbr -q -S ga="git add -p"
+# abbr syntax highlight
+(( ${#ABBR_REGULAR_USER_ABBREVIATIONS} )) && {
+  ZSH_HIGHLIGHT_HIGHLIGHTERS+=(regexp)
+  ZSH_HIGHLIGHT_REGEXP+=('^[[:blank:][:space:]]*('${(j:|:)${(Qk)ABBR_REGULAR_USER_ABBREVIATIONS}}')$' fg=blue)
+  ZSH_HIGHLIGHT_REGEXP+=('\<('${(j:|:)${(Qk)ABBR_GLOBAL_USER_ABBREVIATIONS}}')$' fg=blue,bold)
+}
 # history
 bindkey "^P" history-beginning-search-backward
 bindkey "^N" history-beginning-search-forward

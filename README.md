@@ -13,13 +13,15 @@ sudo snap install code --classic
 mkdir -p ~/.local/share/fonts
 cd ~/.local/share/fonts && curl -fLO https://github.com/ryanoasis/nerd-fonts/raw/HEAD/patched-fonts/DroidSansMono/DroidSansMNerdFont-Regular.otf
 
+# Lid switch: HandleLidSwitch=suspend
+sudo vim /etc/systemd/logind.conf
+
 mkdir ~/dev
 cd ~/dev
 git clone git@github.com:matsuren/dotfiles.git
 ln -s ~/dev/dotfiles/.zshrc ~/.zshrc
 
-which zsh
-chsh
+chsh -s $(which zsh)
 ```
 
 
