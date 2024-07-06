@@ -46,7 +46,7 @@ alias ls="ls --color=auto"
 
 # command usefull
 zinit light zsh-users/zsh-autosuggestions
-zinit light zsh-users/zsh-syntax-highlighting
+zinit light z-shell/F-Sy-H
 bindkey '^[[1;5D' backward-word
 bindkey '^[[1;5C' forward-word
 # Turn off all beeps
@@ -57,12 +57,41 @@ zinit light olets/zsh-abbr
 abbr -q -S gst="git status"
 abbr -q -S gl="git log"
 abbr -q -S ga="git add -p"
-# abbr syntax highlight
-(( ${#ABBR_REGULAR_USER_ABBREVIATIONS} )) && {
-  ZSH_HIGHLIGHT_HIGHLIGHTERS+=(regexp)
-  ZSH_HIGHLIGHT_REGEXP+=('^[[:blank:][:space:]]*('${(j:|:)${(Qk)ABBR_REGULAR_USER_ABBREVIATIONS}}')$' fg=blue)
-  ZSH_HIGHLIGHT_REGEXP+=('\<('${(j:|:)${(Qk)ABBR_GLOBAL_USER_ABBREVIATIONS}}')$' fg=blue,bold)
+# load zsh-abbr, then
+
+chroma_single_word() {
+  (( next_word = 2 | 8192 ))
+
+  local __first_call="$1" __wrd="$2" __start_pos="$3" __end_pos="$4"
+  local __style
+
+  (( __first_call )) && { __style=${FAST_THEME_NAME}alias }
+  [[ -n "$__style" ]] && (( __start=__start_pos-${#PREBUFFER}, __end=__end_pos-${#PREBUFFER}, __start >= 0 )) && reply+=("$__start $__end ${FAST_HIGHLIGHT_STYLES[$__style]}")
+
+  (( this_word = next_word ))
+  _start_pos=$_end_pos
+
+  return 0
 }
+
+register_single_word_chroma() {
+  local word=$1
+  if [[ -x $(command -v $word) ]] || [[ -n $FAST_HIGHLIGHT["chroma-$word"] ]]; then
+    return 1
+  fi
+
+  FAST_HIGHLIGHT+=( "chroma-$word" chroma_single_word )
+  return 0
+}
+
+if [[ -n $FAST_HIGHLIGHT ]]; then
+  for abbr in ${(f)"$(abbr list-abbreviations)"}; do
+    if [[ $abbr != *' '* ]]; then
+      register_single_word_chroma ${(Q)abbr}
+    fi
+  done
+fi
+
 # history
 bindkey "^P" history-beginning-search-backward
 bindkey "^N" history-beginning-search-forward
