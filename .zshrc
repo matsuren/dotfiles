@@ -49,6 +49,11 @@ zinit light zsh-users/zsh-autosuggestions
 zinit light z-shell/F-Sy-H
 bindkey '^[[1;5D' backward-word
 bindkey '^[[1;5C' forward-word
+
+# Tab completion Note: ctrl+C to cancel
+bindkey '^[[Z' reverse-menu-complete
+zstyle ':completion:*' menu select
+
 # Turn off all beeps
 unsetopt BEEP
 
