@@ -21,13 +21,23 @@ export EDITOR="nvim"
 export VISUAL="nvim"
 
 # --- basic config ---
-# Rust
-source "$HOME/.cargo/env"
+# emacs binding for ctrl+a, ctrl+e, etc.
+bindkey -e
+# avoid closing terminal by ctrl+d
+ctrl-d() { zle -M "zsh: use 'exit' to exit."; return 1 }
+zle -N ctrl-d
+bindkey '^D' ctrl-d
+setopt ignoreeof
 # Tab completion Note: ctrl+C to cancel
 bindkey '^[[Z' reverse-menu-complete
 zstyle ':completion:*' menu select
 # Turn off all beeps
 unsetopt BEEP
+# Enable cd - Tab
+setopt auto_pushd
+setopt PUSHD_IGNORE_DUPS
+# Rust
+source "$HOME/.cargo/env"
 
 # --- zinit ----
 # theme
@@ -35,8 +45,9 @@ zinit ice compile'(pure|async).zsh' pick'async.zsh' src'pure.zsh'
 zinit light sindresorhus/pure
 zstyle :prompt:pure:path color green
 zstyle :prompt:pure:prompt:success color cyan
+export PURE_CMD_MAX_EXEC_TIME=2
 
-# color
+# dircolor
 zinit ice atclone"dircolors -b LS_COLORS > clrs.zsh" \
     atpull'%atclone' pick"clrs.zsh" nocompile'!' \
     atload'zstyle ":completion:*" list-colors “${(s.:.)LS_COLORS}”'
