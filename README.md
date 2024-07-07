@@ -12,6 +12,12 @@ sudo snap install code --classic
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 ~/.fzf/install
 
+# Install tmux-mem-cpu-load
+git clone https://github.com/thewtex/tmux-mem-cpu-load.git $HOME/.local/share/tmux-mem-cpu-load
+cd $HOME/.local/share/tmux-mem-cpu-load
+cmake . -DCMAKE_INSTALL_PREFIX=$HOME/.local
+make install
+
 # Install nerd fonts for lualine.nvim
 mkdir -p ~/.local/share/fonts
 cd ~/.local/share/fonts && curl -fLO https://github.com/ryanoasis/nerd-fonts/raw/HEAD/patched-fonts/DroidSansMono/DroidSansMNerdFont-Regular.otf

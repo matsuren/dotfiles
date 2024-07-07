@@ -38,6 +38,7 @@ setopt auto_pushd
 setopt PUSHD_IGNORE_DUPS
 # Rust
 source "$HOME/.cargo/env"
+export PATH="$PATH:$HOME/.local/bin"
 
 # --- zinit ----
 # theme
