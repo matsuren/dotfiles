@@ -66,12 +66,22 @@ zinit light sharkdp/fd
 # sharkdp/bat
 zinit ice as"command" from"gh-r" mv"bat* -> bat" pick"bat/bat"
 zinit light sharkdp/bat
+# BurntSushi/ripgrep
+zinit ice as"command" from"gh-r" mv"ripgrep* -> rg" pick"rg/rg"
+zinit light BurntSushi/ripgrep
+# dandavision/delta
+zinit ice as"command" from"gh-r" mv"delta* -> delta" pick"delta/delta"
+zinit light dandavison/delta
+# wfxr/forgit
+zinit load wfxr/forgit
 
 # fzf settings
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_COMMAND='fd --type f --color=always'
 export FZF_DEFAULT_OPTS="--ansi --layout=reverse --tmux 80% --preview '(bat --color=always --theme=Nord {})'"
 export FZF_CTRL_R_OPTS="--preview 'echo {} | fold -s'"
+# Print tree structure in the preview window
+export FZF_ALT_C_OPTS=" --walker-skip .git,node_modules,target --preview 'tree -C {}'"
 # Use fd (https://github.com/sharkdp/fd) for listing path candidates.
 # - The first argument to the function ($1) is the base path to start traversal
 # - See the source code (completion.{bash,zsh}) for the details.
