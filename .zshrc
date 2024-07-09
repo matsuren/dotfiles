@@ -24,7 +24,7 @@ export VISUAL="nvim"
 # emacs binding for ctrl+a, ctrl+e, etc.
 bindkey -e
 # avoid closing terminal by ctrl+d
-ctrl-d() { zle -M "zsh: use 'exit' to exit."; return 1 }
+ctrl-d() { zle -M "zsh: use 'exit' or ':q' to exit."; return 1 }
 zle -N ctrl-d
 bindkey '^D' ctrl-d
 setopt ignoreeof
@@ -109,6 +109,7 @@ _fzf_comprun() {
 
 # abbr
 zinit light olets/zsh-abbr
+abbr -q -S :q="exit"
 abbr -q -S gst="git status"
 abbr -q -S gl="git log"
 abbr -q -S ga="git add -p"
