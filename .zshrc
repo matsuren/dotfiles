@@ -77,7 +77,7 @@ zinit load wfxr/forgit
 
 # fzf settings
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-export FZF_DEFAULT_COMMAND='fd --type f --color=always'
+export FZF_DEFAULT_COMMAND='fd --hidden -E .git -E .cache -E .rustup --type f --color=always'
 export FZF_DEFAULT_OPTS="--ansi --layout=reverse --tmux 80% --preview '(bat --color=always --theme=Nord {})'"
 export FZF_CTRL_R_OPTS="--preview 'echo {} | fold -s'"
 # Print tree structure in the preview window
