@@ -39,6 +39,8 @@ setopt PUSHD_IGNORE_DUPS
 # Rust
 source "$HOME/.cargo/env"
 export PATH="$PATH:$HOME/.local/bin"
+# Mason
+export PATH="$PATH:$HOME/.local/share/nvim/mason/bin"
 
 # --- zinit ----
 # theme
