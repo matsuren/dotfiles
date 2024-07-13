@@ -5,7 +5,7 @@
 gsettings set org.gnome.desktop.interface gtk-enable-primary-paste false
 
 # Install packages
-sudo apt install zsh git curl htop tmux ibus-mozc xsel
+sudo apt install zsh git git-gui curl htop tmux ibus-mozc xsel
 ibus restart
 sudo snap install code --classic
 # Better to install newer version of fzf. 0.53.0 (c4a9ccd) now
