@@ -20,6 +20,22 @@ alias vim="nvim"
 export EDITOR="nvim"
 export VISUAL="nvim"
 
+# Add go
+GO_DIR="/usr/local/go"
+if [ ! -d "$GO_DIR" ]; then
+    echo "Installing go..."
+    curl -LO https://go.dev/dl/go1.22.5.linux-amd64.tar.gz
+    sudo tar -C /usr/local -xzf go1.22.5.linux-amd64.tar.gz
+    rm  go1.22.5.linux-amd64.tar.gz
+fi
+export PATH=$PATH:/usr/local/go/bin
+export PATH="$PATH:$(go env GOPATH)/bin"
+# Add lazygit
+if ! command -v lazygit &> /dev/null; then
+    echo "lazygit not found, installing..."
+    go install github.com/jesseduffield/lazygit@latest
+fi
+
 # --- basic config ---
 # emacs binding for ctrl+a, ctrl+e, etc.
 bindkey -e
