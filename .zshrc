@@ -57,6 +57,8 @@ source "$HOME/.cargo/env"
 export PATH="$PATH:$HOME/.local/bin"
 # Mason
 export PATH="$PATH:$HOME/.local/share/nvim/mason/bin"
+# Postman
+export PATH="$PATH:$HOME/dev/Postman"
 
 # --- zinit ----
 # theme
