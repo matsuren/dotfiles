@@ -59,6 +59,12 @@ export PATH="$PATH:$HOME/.local/bin"
 export PATH="$PATH:$HOME/.local/share/nvim/mason/bin"
 # Postman
 export PATH="$PATH:$HOME/dev/Postman"
+# Bookmarks
+if [ -d "$HOME/bookmarks" ]; then
+    export CDPATH=".:$HOME/bookmarks"
+    alias goto="cd -P"
+    alias cdr="cd -P ."
+fi
 
 # --- zinit ----
 # theme
