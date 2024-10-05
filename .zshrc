@@ -35,7 +35,11 @@ if ! command -v lazygit &> /dev/null; then
     echo "lazygit not found, installing..."
     go install github.com/jesseduffield/lazygit@latest
 fi
-
+# Add yq
+if ! command -v yq &> /dev/null; then
+    echo "yq not found, installing..."
+    go install github.com/mikefarah/yq/v4@latest
+fi
 # --- basic config ---
 # emacs binding for ctrl+a, ctrl+e, etc.
 bindkey -e
