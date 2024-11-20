@@ -108,6 +108,13 @@ git config --global delta.navigate true
 git config --global merge.conflictstyle diff3
 git config --global diff.colorMoved default
 export DELTA_FEATURES="+line-numbers"
+# Additional git config
+git config --global rerere.enabled true
+git config --global column.ui auto
+git config --global branch.sort -committerdate
+git config --global rebase.updateRefs true
+git config --global push.useForceIfIncludes true
+git config --global alias.push-with-lease 'push --force-with-lease --force-if-includes'
 # wfxr/forgit
 zinit load wfxr/forgit
 
