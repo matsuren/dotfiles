@@ -29,6 +29,7 @@ mkdir ~/dev
 cd ~/dev
 git clone git@github.com:matsuren/dotfiles.git
 ln -s ~/dev/dotfiles/.zshrc ~/.zshrc
+ln -s ~/dev/dotfiles/.ripgreprc ~/.ripgreprc
 
 chsh -s $(which zsh)
 ```
