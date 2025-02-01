@@ -20,6 +20,15 @@ alias vim="nvim"
 export EDITOR="nvim"
 export VISUAL="nvim"
 
+# Add git-jump
+GIT_JUMP_PATH="$HOME/.local/bin/git-jump"
+if [ ! -f "$GIT_JUMP_PATH" ]; then
+    echo "Installing git-jump..."
+    curl -o "$GIT_JUMP_PATH" https://raw.githubusercontent.com/git/git/master/contrib/git-jump/git-jump
+    chmod +x "$GIT_JUMP_PATH"
+    echo "git-jump installed successfully"
+fi
+
 # Add go
 GO_DIR="/usr/local/go"
 if [ ! -d "$GO_DIR" ]; then
