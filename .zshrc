@@ -39,16 +39,7 @@ if [ ! -d "$GO_DIR" ]; then
 fi
 export PATH=$PATH:/usr/local/go/bin
 export PATH="$PATH:$(go env GOPATH)/bin"
-# Add lazygit
-if ! command -v lazygit &> /dev/null; then
-    echo "lazygit not found, installing..."
-    go install github.com/jesseduffield/lazygit@latest
-fi
-# Add yq
-if ! command -v yq &> /dev/null; then
-    echo "yq not found, installing..."
-    go install github.com/mikefarah/yq/v4@latest
-fi
+
 # --- basic config ---
 # emacs binding for ctrl+a, ctrl+e, etc.
 bindkey -e
@@ -94,7 +85,7 @@ zinit ice atclone"dircolors -b LS_COLORS > clrs.zsh" \
 zinit light trapd00r/LS_COLORS
 alias ls="ls --color=auto"
 
-# command usefull
+# command useful
 zinit light zsh-users/zsh-autosuggestions
 zinit light z-shell/F-Sy-H  # Better than zsh-syntax-highlighting for bracket
 bindkey '^[[1;5D' backward-word
@@ -124,8 +115,6 @@ git config --global branch.sort -committerdate
 git config --global rebase.updateRefs true
 git config --global push.useForceIfIncludes true
 git config --global alias.push-with-lease 'push --force-with-lease --force-if-includes'
-# wfxr/forgit
-zinit load wfxr/forgit
 
 # fzf settings
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
