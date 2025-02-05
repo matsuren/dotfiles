@@ -1,0 +1,26 @@
+#!/bin/bash
+# Store the name of the script for error messages
+SCRIPT_NAME=$(basename "$0")
+TARGET_DIR="."
+
+# Check if required tools are installed
+command -v ruff >/dev/null 2>&1 || { echo "Error: ruff is not installed. Run 'pip install ruff'" >&2; exit 1; }
+
+echo "Running pre-push checks on $TARGET_DIR"
+
+# Run Ruff format
+echo "Running Ruff formatter..."
+ruff format --diff $TARGET_DIR || {
+    echo "❌ Ruff format failed. Please fix formatting issues before pushing."
+    exit 1
+}
+
+# Run Ruff linter
+echo "Running Ruff linter..."
+ruff check $TARGET_DIR || {
+    echo "❌ Ruff check failed. Please fix linting issues before pushing."
+    exit 1
+}
+
+echo "✅ All checks passed!"
+exit 0
