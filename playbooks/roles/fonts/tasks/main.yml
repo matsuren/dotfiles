@@ -1,0 +1,16 @@
+---
+- name: Ensure font directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.local/share/fonts"
+    state: directory
+    mode: '0755'
+
+- name: Download Nerd Font (Droid Sans Mono)
+  ansible.builtin.get_url:
+    url: "https://github.com/ryanoasis/nerd-fonts/raw/HEAD/patched-fonts/DroidSansMono/DroidSansMNerdFont-Regular.otf"
+    dest: "{{ ansible_env.HOME }}/.local/share/fonts/DroidSansMNerdFont-Regular.otf"
+    mode: '0644'
+
+- name: Refresh font cache
+  ansible.builtin.command: fc-cache -fv
+  changed_when: false

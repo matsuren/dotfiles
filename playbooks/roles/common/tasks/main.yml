@@ -1,0 +1,23 @@
+---
+- name: Ensure XKBOPTIONS is set in /etc/default/keyboard
+  ansible.builtin.lineinfile:
+    path: /etc/default/keyboard
+    regexp: '^XKBOPTIONS='
+    line: 'XKBOPTIONS="ctrl:nocaps"'
+    state: present
+    backup: yes
+
+- name: Install required packages
+  ansible.builtin.apt:
+    name:
+      - build-essential
+      - zsh
+      - git
+      - curl
+      - htop
+      - tmux
+      - ibus-mozc
+      - xsel
+      - stow
+    state: present
+    update_cache: yes
