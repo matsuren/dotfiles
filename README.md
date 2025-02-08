@@ -31,6 +31,16 @@ stow -v zsh tmux rg
 chsh -s $(which zsh)
 ```
 
+# TODO
+Add install instruction for following since
+```
+# sharkdp/fd
+# sharkdp/bat
+# BurntSushi/ripgrep
+# dandavision/delta
+# savedra1/clipse
+```
+
 
 Tips for Mozc Japanese input
 - DirectInput: Activate IME
