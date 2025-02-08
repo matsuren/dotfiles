@@ -1,7 +1,7 @@
 
 ```bash
 # Capslock to control, /etc/default/keyboard  XKBOPTIONS="ctrl:nocaps"
-# Setup startup to disable middle buttom click paste
+# Setup startup to disable middle button click paste
 gsettings set org.gnome.desktop.interface gtk-enable-primary-paste false
 
 # Install packages
