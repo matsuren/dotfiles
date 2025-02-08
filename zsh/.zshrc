@@ -1,8 +1,30 @@
-# Add zint
-ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
-[ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
-[ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
-source "${ZINIT_HOME}/zinit.zsh"
+# Add antidote
+ANTIDOTE_HOME="${ZDOTDIR:-$HOME}/.antidote"
+[ ! -d $ANTIDOTE_HOME ] && git clone --depth=1 https://github.com/mattmc3/antidote.git "$ANTIDOTE_HOME"
+# Lazy-load antidote and generate the static load file only when needed
+zsh_plugins=${ZDOTDIR:-$HOME}/.zsh_plugins
+if [[ ! ${zsh_plugins}.zsh -nt ${zsh_plugins}.txt ]]; then
+  (
+    source "${ANTIDOTE_HOME}/antidote.zsh"
+    antidote bundle <${zsh_plugins}.txt >${zsh_plugins}.zsh
+  )
+fi
+source ${zsh_plugins}.zsh
+
+# Prompt
+autoload -Uz promptinit && promptinit && prompt pure
+zstyle :prompt:pure:path color green
+zstyle :prompt:pure:prompt:success color cyan
+export PURE_CMD_MAX_EXEC_TIME=2
+
+# lscolor
+if [ ! -f "$HOME/.local/share/lscolors.sh" ]; then
+  mkdir -p /tmp/LS_COLORS
+  curl -L https://api.github.com/repos/trapd00r/LS_COLORS/tarball/master | tar xzf - --directory=/tmp/LS_COLORS --strip=1
+  cd /tmp/LS_COLORS && make install
+  rm -rf /tmp/LS_COLORS
+fi
+[ -f "$HOME/.local/share/lscolors.sh" ] && source "$HOME/.local/share/lscolors.sh"
 
 # Add Neovim
 NVIM_DIR="/opt/nvim-linux64"
@@ -56,6 +78,11 @@ unsetopt BEEP
 # Enable cd - Tab
 setopt auto_pushd
 setopt PUSHD_IGNORE_DUPS
+
+alias ls="ls --color=auto"
+bindkey '^[[1;5D' backward-word
+bindkey '^[[1;5C' forward-word
+
 # Rust
 source "$HOME/.cargo/env"
 export PATH="$PATH:$HOME/.local/bin"
@@ -70,45 +97,13 @@ if [ -d "$HOME/bookmarks" ]; then
     alias cdr="cd -P ."
 fi
 
-# --- zinit ----
-# theme
-zinit ice compile'(pure|async).zsh' pick'async.zsh' src'pure.zsh'
-zinit light sindresorhus/pure
-zstyle :prompt:pure:path color green
-zstyle :prompt:pure:prompt:success color cyan
-export PURE_CMD_MAX_EXEC_TIME=2
-
-# dircolor
-zinit ice atclone"dircolors -b LS_COLORS > clrs.zsh" \
-    atpull'%atclone' pick"clrs.zsh" nocompile'!' \
-    atload'zstyle ":completion:*" list-colors “${(s.:.)LS_COLORS}”'
-zinit light trapd00r/LS_COLORS
-alias ls="ls --color=auto"
-
-# command useful
-zinit light zsh-users/zsh-autosuggestions
-zinit light z-shell/F-Sy-H  # Better than zsh-syntax-highlighting for bracket
-bindkey '^[[1;5D' backward-word
-bindkey '^[[1;5C' forward-word
-# sharkdp/fd
-zinit ice as"command" from"gh-r" mv"fd* -> fd" pick"fd/fd"
-zinit light sharkdp/fd
-# sharkdp/bat
-zinit ice as"command" from"gh-r" mv"bat* -> bat" pick"bat/bat"
-zinit light sharkdp/bat
-# BurntSushi/ripgrep
-zinit ice as"command" from"gh-r" mv"ripgrep* -> rg" pick"rg/rg"
-zinit light BurntSushi/ripgrep
-# dandavision/delta
-zinit ice as"command" from"gh-r" mv"delta* -> delta" pick"delta/delta"
-zinit light dandavison/delta
+# Git config with delta
 git config --global core.pager delta
 git config --global interactive.diffFilter "delta --color-only"
 git config --global delta.navigate true
 git config --global merge.conflictstyle diff3
 git config --global diff.colorMoved default
 export DELTA_FEATURES="+line-numbers"
-# Additional git config
 git config --global rerere.enabled true
 git config --global column.ui auto
 git config --global branch.sort -committerdate
@@ -149,7 +144,6 @@ _fzf_comprun() {
 }
 
 # abbr
-zinit light olets/zsh-abbr
 abbr -q -S :q="exit"
 abbr -q -S gst="git status"
 abbr -q -S gl="git log"
@@ -227,6 +221,8 @@ setopt hist_no_store
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+eval "$(zoxide init zsh)"
+
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 __conda_setup="$("$HOME/miniconda3/bin/conda" 'shell.zsh' 'hook' 2> /dev/null)"
@@ -244,3 +240,5 @@ unset __conda_setup
 
 # ripgrep 
 export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
+
+eval "$(zoxide init zsh)"
