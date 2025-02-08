@@ -31,6 +31,12 @@ sudo snap install code --classic
 # Better to install newer version of fzf. 0.53.0 (c4a9ccd) now
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 ~/.fzf/install
+# cargo binstall
+curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
+cargo binstall ripgrep fd-find bat git-delta
+
+# savedra1/clipse
+go install github.com/savedra1/clipse@v1.1.0
 
 # Install tmux-mem-cpu-load
 git clone https://github.com/thewtex/tmux-mem-cpu-load.git $HOME/.local/share/tmux-mem-cpu-load
@@ -51,15 +57,6 @@ stow -v zsh tmux rg
 chsh -s $(which zsh)
 ```
 
-# TODO
-Add install instruction for following since
-```
-# sharkdp/fd
-# sharkdp/bat
-# BurntSushi/ripgrep
-# dandavision/delta
-# savedra1/clipse
-```
 
 
 Tips for Mozc Japanese input
