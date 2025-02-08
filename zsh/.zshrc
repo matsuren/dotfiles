@@ -241,4 +241,22 @@ unset __conda_setup
 # ripgrep 
 export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
 
-eval "$(zoxide init zsh)"
+# direnv
+if command -v direnv > /dev/null 2>&1; then
+    eval "$(direnv hook zsh)"
+fi
+
+# fnm (nvm is too slow)
+FNM_PATH="$HOME/.local/share/fnm"
+if [ -d "$FNM_PATH" ]; then
+  export PATH="$HOME/.local/share/fnm:$PATH"
+  eval "`fnm env`"
+fi
+
+# pnpm
+export PNPM_HOME="$HOME/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
