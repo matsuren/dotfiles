@@ -12,7 +12,7 @@ cd
 git clone git@github.com:matsuren/dotfiles.git
 cd dotfiles
 ansible-playbook -i inventory.ini playbooks/main.yml -K
-stow -v zsh tmux rg atuin
+stow -v zsh tmux rg atuin yazi
 chsh -s $(which zsh)
 ```
 
@@ -34,6 +34,9 @@ git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 # cargo binstall
 curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
 cargo binstall ripgrep fd-find bat git-delta
+curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh
+# Yazi (Install https://github.com/jstkdng/ueberzugpp for image preview)
+cargo install --locked yazi-fm yazi-cli
 
 # savedra1/clipse
 go install github.com/savedra1/clipse@v1.1.0
