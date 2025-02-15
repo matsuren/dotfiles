@@ -264,3 +264,13 @@ esac
 . "$HOME/.atuin/bin/env"
 
 eval "$(atuin init zsh --disable-up-arrow)"
+
+# yazi with change working directory
+function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+	yazi "$@" --cwd-file="$tmp"
+	if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+		builtin cd -- "$cwd"
+	fi
+	rm -f -- "$tmp"
+}
