@@ -40,6 +40,8 @@ cargo install --locked yazi-fm yazi-cli
 
 # savedra1/clipse
 go install github.com/savedra1/clipse@v1.1.0
+# Striker formatter
+go install mvdan.cc/gofumpt@latest
 
 # Install tmux-mem-cpu-load
 git clone https://github.com/thewtex/tmux-mem-cpu-load.git $HOME/.local/share/tmux-mem-cpu-load
