@@ -22,6 +22,8 @@
 # a full restart to take effect.
 
 theme = tokyonight_moon
+font-size = 13
+font-feature = -calt
 
 # Config syntax crash course
 # ==========================
