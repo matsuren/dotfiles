@@ -239,7 +239,7 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
-# ripgrep 
+# ripgrep
 export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
 
 # direnv
