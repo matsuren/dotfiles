@@ -62,6 +62,25 @@ stow -v zsh tmux rg
 chsh -s $(which zsh)
 ```
 
+# Obsidian
+```
+chmod +x Obsidian-1.8.10.AppImage
+sudo mkdir -p /opt/Obsidian
+sudo mv Obsidian-1.8.10.AppImage /opt/Obsidian/obsidian
+vim ~/.local/share/applications/obsidian.desktop
+
+[Desktop Entry]
+Name=Obsidian
+Exec=/opt/Obsidian/obsidian
+Icon=/home/komatsu/Applications/icons/icons.obsidian.png
+Type=Application
+Categories=Utility;
+StartupNotify=true
+MimeType=x-scheme-handler/obsidian;text/html;
+
+cp -r vaults ~/
+```
+
 
 
 Tips for Mozc Japanese input
