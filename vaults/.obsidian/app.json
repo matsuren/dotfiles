@@ -2,6 +2,9 @@
   "attachmentFolderPath": "./attachments",
   "useMarkdownLinks": true,
   "newLinkFormat": "relative",
-  "newFileLocation": "current",
-  "trashOption": "local"
+  "newFileLocation": "folder",
+  "trashOption": "local",
+  "useTab": false,
+  "vimMode": true,
+  "newFileFolderPath": "notes"
 }
