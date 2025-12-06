@@ -180,7 +180,9 @@ setopt hist_no_store
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-eval "$(zoxide init zsh)"
+if command -v zoxide >/dev/null 2>&1; then
+  eval "$(zoxide init zsh)"
+fi
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
@@ -220,9 +222,11 @@ case ":$PATH:" in
 esac
 # pnpm end
 
-. "$HOME/.atuin/bin/env"
 
-eval "$(atuin init zsh --disable-up-arrow)"
+if command -v atuin >/dev/null 2>&1; then
+  . "$HOME/.atuin/bin/env"
+  eval "$(atuin init zsh --disable-up-arrow)"
+fi
 
 # yazi with change working directory
 function y() {

@@ -26,6 +26,7 @@
           - ibus-mozc
           - xsel
           - stow
+          - fzf
         state: present
 - name: Configure and Install packages for macOS
   when: ansible_os_family == "Darwin"
@@ -39,6 +40,7 @@
           - htop
           - tmux
           - stow
+          - fzf
         state: present
 - name: Ensure ~/.config exists
   file:
