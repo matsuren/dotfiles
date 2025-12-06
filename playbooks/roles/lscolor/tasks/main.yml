@@ -1,33 +1,36 @@
 ---
-- name: Ensure LS_COLORS install directory exists
-  file:
-    path: '{{ ansible_env.HOME }}/.local/share'
-    state: directory
-    mode: "0755"
-- name: Check if lscolors.sh already exists
-  stat:
-    path: '{{ ansible_env.HOME }}/.local/share/lscolors.sh'
-  register: lscolors_stat
-- name: Download and install LS_COLORS
-  when: not lscolors_stat.stat.exists
+- name: Install LS_COLORS
   block:
-    - name: Create temporary directory
+    - name: Ensure LS_COLORS install directory exists
       file:
-        path: /tmp/LS_COLORS
+        path: '{{ ansible_env.HOME }}/.local/share'
         state: directory
         mode: "0755"
-    - name: Download LS_COLORS tarball
-      ansible.builtin.get_url:
-        url: https://api.github.com/repos/trapd00r/LS_COLORS/tarball/master
-        dest: /tmp/LS_COLORS.tar.gz
-    - name: Extract LS_COLORS tarball
-      ansible.builtin.command:
-        cmd: tar -xzf /tmp/LS_COLORS.tar.gz -C /tmp/LS_COLORS --strip-components=1
-    - name: Install LS_COLORS
-      command: make install
-      args:
-        chdir: /tmp/LS_COLORS
-    - name: Remove temporary directory
-      file:
-        path: /tmp/LS_COLORS
-        state: absent
+    - name: Check if lscolors.sh already exists
+      stat:
+        path: '{{ ansible_env.HOME }}/.local/share/lscolors.sh'
+      register: lscolors_stat
+    - name: Download and install LS_COLORS
+      when: not lscolors_stat.stat.exists
+      block:
+        - name: Create temporary directory
+          file:
+            path: /tmp/LS_COLORS
+            state: directory
+            mode: "0755"
+        - name: Download LS_COLORS tarball
+          ansible.builtin.get_url:
+            url: https://api.github.com/repos/trapd00r/LS_COLORS/tarball/master
+            dest: /tmp/LS_COLORS.tar.gz
+        - name: Extract LS_COLORS tarball
+          ansible.builtin.command:
+            cmd: tar -xzf /tmp/LS_COLORS.tar.gz -C /tmp/LS_COLORS --strip-components=1
+        - name: Install LS_COLORS
+          command: make install
+          args:
+            chdir: /tmp/LS_COLORS
+        - name: Remove temporary directory
+          file:
+            path: /tmp/LS_COLORS
+            state: absent
+  when: ansible_system != "Darwin"

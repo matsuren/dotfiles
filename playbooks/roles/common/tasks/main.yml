@@ -39,7 +39,6 @@
           - htop
           - tmux
           - stow
-          - coreutils  # for dircolors
         state: present
 - name: Ensure ~/.config exists
   file:
