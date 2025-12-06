@@ -37,10 +37,9 @@
       homebrew:
         name: neovim
         state: present
-
 - name: Install Neovim config
   ansible.builtin.git:
     repo: git@github.com:matsuren/nvim-config.git
-    dest: "{{ ansible_env.HOME }}/.config/nvim"
+    dest: '{{ ansible_env.HOME }}/.config/nvim'
     version: main
     update: no
