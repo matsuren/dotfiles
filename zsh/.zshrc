@@ -26,26 +26,6 @@ if command -v nvim >/dev/null 2>&1; then
   export VISUAL="nvim"
 fi
 
-# Add git-jump
-GIT_JUMP_PATH="$HOME/.local/bin/git-jump"
-if [ ! -f "$GIT_JUMP_PATH" ]; then
-    echo "Installing git-jump..."
-    curl -o "$GIT_JUMP_PATH" https://raw.githubusercontent.com/git/git/master/contrib/git-jump/git-jump
-    chmod +x "$GIT_JUMP_PATH"
-    echo "git-jump installed successfully"
-fi
-
-# Add go
-GO_DIR="/usr/local/go"
-if [ ! -d "$GO_DIR" ]; then
-    echo "Installing go..."
-    curl -LO https://go.dev/dl/go1.22.5.linux-amd64.tar.gz
-    sudo tar -C /usr/local -xzf go1.22.5.linux-amd64.tar.gz
-    rm  go1.22.5.linux-amd64.tar.gz
-fi
-export PATH=$PATH:/usr/local/go/bin
-export PATH="$PATH:$(go env GOPATH)/bin"
-
 # --- basic config ---
 # emacs binding for ctrl+a, ctrl+e, etc.
 bindkey -e
@@ -74,12 +54,6 @@ export PATH="$PATH:$HOME/.local/bin"
 export PATH="$PATH:$HOME/.local/share/nvim/mason/bin"
 # Postman
 export PATH="$PATH:$HOME/dev/Postman"
-# Bookmarks
-if [ -d "$HOME/bookmarks" ]; then
-    export CDPATH=".:$HOME/bookmarks"
-    alias goto="cd -P"
-    alias cdr="cd -P ."
-fi
 
 # Git config with delta
 git config --global core.pager delta
