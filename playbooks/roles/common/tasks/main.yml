@@ -1,23 +1,47 @@
 ---
-- name: Ensure XKBOPTIONS is set in /etc/default/keyboard
-  ansible.builtin.lineinfile:
-    path: /etc/default/keyboard
-    regexp: '^XKBOPTIONS='
-    line: 'XKBOPTIONS="ctrl:nocaps"'
-    state: present
-    backup: yes
-
-- name: Install required packages
-  ansible.builtin.apt:
-    name:
-      - build-essential
-      - zsh
-      - git
-      - curl
-      - htop
-      - tmux
-      - ibus-mozc
-      - xsel
-      - stow
-    state: present
-    update_cache: yes
+- name: Configure and Install packages for Debian/Ubuntu
+  become: true
+  when: ansible_os_family == "Debian"
+  block:
+    - name: Ensure XKBOPTIONS is set in /etc/default/keyboard
+      lineinfile:
+        path: /etc/default/keyboard
+        regexp: ^XKBOPTIONS=
+        line: XKBOPTIONS="ctrl:nocaps"
+        state: present
+        backup: yes
+    - name: Update apt cache (once)
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+    - name: Install required packages on Debian/Ubuntu
+      apt:
+        name:
+          - build-essential
+          - zsh
+          - git
+          - curl
+          - htop
+          - tmux
+          - ibus-mozc
+          - xsel
+          - stow
+        state: present
+- name: Configure and Install packages for macOS
+  when: ansible_os_family == "Darwin"
+  block:
+    - name: Install required packages on macOS
+      community.general.homebrew:
+        name:
+          - zsh
+          - git
+          - curl
+          - htop
+          - tmux
+          - stow
+        state: present
+- name: Ensure ~/.config exists
+  file:
+    path: '{{ ansible_env.HOME }}/.config'
+    state: directory
+    mode: "0755"
