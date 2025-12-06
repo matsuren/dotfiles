@@ -47,3 +47,12 @@
     path: '{{ ansible_env.HOME }}/.config'
     state: directory
     mode: "0755"
+- name: Configure host-specific Pure colors
+  copy:
+    dest: "{{ ansible_env.HOME }}/.zsh_host_theme"
+    content: |
+      zstyle :prompt:pure:path color {{ pure_path_color }}
+      zstyle :prompt:pure:prompt:success color {{ pure_success_color }}
+  vars:
+    pure_path_color: "{{ 'green' if ansible_hostname | lower | endswith('thinkpad') else 'yellow' }}"
+    pure_success_color: "{{ 'cyan' if ansible_hostname | lower | endswith('thinkpad') else 'magenta' }}"

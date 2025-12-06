@@ -13,8 +13,14 @@ source ${zsh_plugins}.zsh
 
 # Prompt
 autoload -Uz promptinit && promptinit && prompt pure
-zstyle :prompt:pure:path color green
-zstyle :prompt:pure:prompt:success color cyan
+# Load host-specific theme if exists
+if [ -f "${HOME}/.zsh_host_theme" ]; then
+  source "${HOME}/.zsh_host_theme"
+else
+  # Default colors
+  zstyle :prompt:pure:path color green
+  zstyle :prompt:pure:prompt:success color cyan
+fi
 export PURE_CMD_MAX_EXEC_TIME=2
 
 # lscolor
