@@ -18,12 +18,6 @@ zstyle :prompt:pure:prompt:success color cyan
 export PURE_CMD_MAX_EXEC_TIME=2
 
 # lscolor
-if [ ! -f "$HOME/.local/share/lscolors.sh" ]; then
-  mkdir -p /tmp/LS_COLORS
-  curl -L https://api.github.com/repos/trapd00r/LS_COLORS/tarball/master | tar xzf - --directory=/tmp/LS_COLORS --strip=1
-  cd /tmp/LS_COLORS && make install
-  rm -rf /tmp/LS_COLORS
-fi
 [ -f "$HOME/.local/share/lscolors.sh" ] && source "$HOME/.local/share/lscolors.sh"
 
 if command -v nvim >/dev/null 2>&1; then
