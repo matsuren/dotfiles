@@ -26,21 +26,11 @@ if [ ! -f "$HOME/.local/share/lscolors.sh" ]; then
 fi
 [ -f "$HOME/.local/share/lscolors.sh" ] && source "$HOME/.local/share/lscolors.sh"
 
-# Add Neovim
-NVIM_DIR="/opt/nvim-linux-x86_64"
-if [ ! -d "$NVIM_DIR" ]; then
-    echo "Installing neovim,,,,"
-    curl -LO https://github.com/neovim/neovim/releases/download/v0.11.3/nvim-linux-x86_64.tar.gz
-    sudo rm -rf $NVIM_DIR
-    sudo tar -C /opt -xzf nvim-linux-x86_64.tar.gz
-    rm nvim-linux-x86_64.tar.gz
-    git clone git@github.com:matsuren/nvim-config.git ~/.config/nvim
-    # git clone https://github.com/matsuren/nvim-config.git ~/.config/nvim
+if command -v nvim >/dev/null 2>&1; then
+  alias vim="nvim"
+  export EDITOR="nvim"
+  export VISUAL="nvim"
 fi
-export PATH="$PATH:$NVIM_DIR/bin"
-alias vim="nvim"
-export EDITOR="nvim"
-export VISUAL="nvim"
 
 # Add git-jump
 GIT_JUMP_PATH="$HOME/.local/bin/git-jump"
