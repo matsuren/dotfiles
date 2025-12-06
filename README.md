@@ -2,6 +2,7 @@ Install ansible via uv
 ```
 curl -LsSf https://astral.sh/uv/install.sh | sh
 uv tool install ansible-core
+ansible-galaxy collection install community.general
 ```
 
 Run
