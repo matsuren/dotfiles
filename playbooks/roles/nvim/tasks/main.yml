@@ -1,0 +1,46 @@
+---
+- name: Install nvim for Debian/Ubuntu
+  become: true
+  when: ansible_os_family == "Debian"
+  block:
+    - name: Check if nvim is installed
+      stat:
+        path: /opt/nvim-linux-x86_64/bin/nvim
+      register: nvim_installed
+    - name: Download the Neovim archive
+      ansible.builtin.get_url:
+        url: https://github.com/neovim/neovim/releases/download/v0.11.3/nvim-linux-x86_64.tar.gz
+        dest: /tmp/nvim-linux-x86_64.tar.gz
+        mode: "0644"
+      when: not nvim_installed.stat.exists
+    - name: Extract the Neovim archive to /opt
+      ansible.builtin.unarchive:
+        src: /tmp/nvim-linux-x86_64.tar.gz
+        dest: /opt
+        remote_src: yes
+        creates: /opt/nvim-linux-x86_64/bin/nvim # Idempotence check
+    - name: Remove downloaded archive
+      file:
+        path: /tmp/nvim-linux-x86_64.tar.gz
+        state: absent
+      when: not nvim_installed.stat.exists
+    - name: Symlink nvim into ~/.local/bin
+      become: false
+      ansible.builtin.file:
+        src: /opt/nvim-linux-x86_64/bin/nvim
+        dest: '{{ ansible_env.HOME }}/.local/bin/nvim'
+        state: link
+- name: Install nvim for macOS
+  when: ansible_os_family == "Darwin"
+  block:
+    - name: Install Neovim for macOS
+      homebrew:
+        name: neovim
+        state: present
+
+- name: Install Neovim config
+  ansible.builtin.git:
+    repo: git@github.com:matsuren/nvim-config.git
+    dest: "{{ ansible_env.HOME }}/.config/nvim"
+    version: main
+    update: no
