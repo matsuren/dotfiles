@@ -26,8 +26,21 @@
           - ibus-mozc
           - xsel
           - stow
-          - fzf
         state: present
+    - name: Clone fzf on Debian/Ubuntu
+      ansible.builtin.git:
+        repo: https://github.com/junegunn/fzf.git
+        dest: "{{ ansible_env.HOME }}/.fzf"
+        version: "v0.67.0"
+        depth: 1
+    - name: Install fzf on Debian/Ubuntu
+      ansible.builtin.command:
+        cmd: >
+          {{ ansible_env.HOME }}/.fzf/install
+          --key-bindings
+          --completion
+          --no-update-rc
+        creates: "{{ ansible_env.HOME }}/.fzf/bin/fzf"
 - name: Configure and Install packages for macOS
   when: ansible_os_family == "Darwin"
   block:
