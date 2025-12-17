@@ -67,5 +67,6 @@
       zstyle :prompt:pure:path color {{ pure_path_color }}
       zstyle :prompt:pure:prompt:success color {{ pure_success_color }}
   vars:
-    pure_path_color: "{{ 'green' if ansible_hostname | lower | endswith('thinkpad') else 'yellow' }}"
-    pure_success_color: "{{ 'cyan' if ansible_hostname | lower | endswith('thinkpad') else 'magenta' }}"
+    is_thinkpad: "{{ ansible_hostname | lower is search('thinkpad$') }}"
+    pure_path_color: "{{ 'green' if is_thinkpad else 'yellow' }}"
+    pure_success_color: "{{ 'cyan' if is_thinkpad else 'magenta' }}"
