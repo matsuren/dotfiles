@@ -208,6 +208,10 @@ unset __conda_setup
 # ripgrep
 export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
 
+# python
+# export PYTHONBREAKPOINT=pdbpp.set_trace
+export PYTHONBREAKPOINT=ipdb.set_trace
+
 # direnv
 if command -v direnv > /dev/null 2>&1; then
     eval "$(direnv hook zsh)"
