@@ -54,6 +54,7 @@
           - tmux
           - stow
           - fzf
+          - fd
         state: present
 - name: Ensure ~/.config exists
   file:
