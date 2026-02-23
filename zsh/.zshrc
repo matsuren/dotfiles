@@ -49,7 +49,14 @@ unsetopt BEEP
 setopt auto_pushd
 setopt PUSHD_IGNORE_DUPS
 
-alias ls="ls --color=auto"
+case "$(uname)" in
+  Darwin)
+    alias ls="ls -G"
+    ;;
+  *)
+    alias ls="ls --color=auto"
+    ;;
+esac
 bindkey '^[[1;5D' backward-word
 bindkey '^[[1;5C' forward-word
 
