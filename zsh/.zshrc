@@ -81,7 +81,7 @@ git config --global branch.sort -committerdate
 git config --global rebase.updateRefs true
 git config --global push.useForceIfIncludes true
 git config --global alias.push-with-lease 'push --force-with-lease --force-if-includes'
-git config --global merge.ff false
+git config --global merge.ff true
 
 # fzf settings
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
