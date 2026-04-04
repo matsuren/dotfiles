@@ -68,6 +68,8 @@ export PATH="$PATH:$HOME/.local/share/nvim/mason/bin"
 # Postman
 export PATH="$PATH:$HOME/dev/Postman"
 
+git config --global user.name "Ren Komatsu"
+git config --global user.email "ren.komatsu.rk@gmail.com"
 # Git config with delta
 git config --global core.pager delta
 git config --global interactive.diffFilter "delta --color-only"
