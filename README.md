@@ -11,7 +11,7 @@ cd
 git clone git@github.com:matsuren/dotfiles.git
 cd dotfiles
 ansible-playbook -i inventory.ini playbooks/main.yml -K
-stow -v zsh tmux rg atuin yazi
+stow -v zsh tmux rg atuin
 chsh -s $(which zsh)
 ```
 
