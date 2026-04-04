@@ -32,11 +32,26 @@
         state: link
 - name: Install nvim for macOS
   when: ansible_os_family == "Darwin"
+  become: true
   block:
-    - name: Install Neovim for macOS
-      homebrew:
-        name: neovim
-        state: present
+    - name: Download Neovim archive
+      ansible.builtin.get_url:
+        url: "https://github.com/neovim/neovim/releases/download/v0.11.7/nvim-macos-arm64.tar.gz"
+        dest: /tmp/nvim-macos-arm64.tar.gz
+        mode: '0644'
+    - name: Remove previous extracted Neovim
+      ansible.builtin.file:
+        path: /opt/nvim-macos-arm64
+        state: absent
+    - name: Extract Neovim
+      ansible.builtin.shell:
+        cmd: tar xzf /tmp/nvim-macos-arm64.tar.gz -C /opt
+    - name: Symlink nvim
+      ansible.builtin.file:
+        src: /opt/nvim-macos-arm64/bin/nvim
+        dest: /opt/homebrew/bin/nvim
+        state: link
+        force: true
 - name: Install Neovim config
   ansible.builtin.git:
     repo: git@github.com:matsuren/nvim-config.git

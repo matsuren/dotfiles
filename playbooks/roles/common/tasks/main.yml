@@ -47,15 +47,24 @@
     - name: Install required packages on macOS
       community.general.homebrew:
         name:
-          - zsh
-          - git
+          - atuin
+          - cmake
           - curl
-          - htop
-          - tmux
-          - stow
-          - fzf
           - fd
+          - fzf
+          - git
+          - git-delta
+          - htop
+          - node@24
+          - ripgrep
+          - stow
+          - tmux
+          - tree
+          - zoxide
+          - zsh
         state: present
+    - name: Link Node.js to make it the default version
+      ansible.builtin.command: brew link --force --overwrite node@24
 - name: Ensure ~/.config exists
   file:
     path: '{{ ansible_env.HOME }}/.config'
