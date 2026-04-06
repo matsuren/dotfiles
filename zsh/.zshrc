@@ -1,6 +1,10 @@
 # Add antidote
 ANTIDOTE_HOME="${ZDOTDIR:-$HOME}/.antidote"
 [ ! -d $ANTIDOTE_HOME ] && git clone --depth=1 https://github.com/mattmc3/antidote.git "$ANTIDOTE_HOME"
+
+autoload -Uz compinit
+[[ -o interactive ]] && ! (( ${+_comps} )) && compinit
+
 # Lazy-load antidote and generate the static load file only when needed
 zsh_plugins=${ZDOTDIR:-$HOME}/.zsh_plugins
 if [[ ! ${zsh_plugins}.zsh -nt ${zsh_plugins}.txt ]]; then
