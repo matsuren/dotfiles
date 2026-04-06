@@ -15,6 +15,25 @@ stow -v zsh tmux rg atuin
 chsh -s $(which zsh)
 ```
 
+```
+git config --global user.name "Ren Komatsu"
+git config --global user.email "ren.komatsu.rk@gmail.com"
+# Git config with delta
+git config --global core.pager delta
+git config --global interactive.diffFilter "delta --color-only"
+git config --global delta.navigate true
+git config --global merge.conflictstyle diff3
+git config --global diff.colorMoved default
+# export DELTA_FEATURES="+line-numbers"
+git config --global rerere.enabled true
+git config --global column.ui auto
+git config --global branch.sort -committerdate
+git config --global rebase.updateRefs true
+git config --global push.useForceIfIncludes true
+git config --global alias.push-with-lease 'push --force-with-lease --force-if-includes'
+git config --global merge.ff true
+```
+
 
 Below is previous info
 
