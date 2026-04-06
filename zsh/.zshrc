@@ -182,8 +182,6 @@ setopt share_history
 setopt hist_reduce_blanks
 setopt hist_no_store
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
 if command -v zoxide >/dev/null 2>&1; then
   eval "$(zoxide init zsh)"
 fi
