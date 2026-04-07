@@ -1,6 +1,10 @@
 theme = TokyoNight
-font-size = 14
+font-size = 14.5
 font-feature = -calt
+font-family = "Menlo"
+font-family = "Ubuntu Sans Mono"
+font-family = "JetBrains Mono"
+adjust-cell-height = 10%
 
 # for vim-tmux-navigator
 keybind = super+h=text:\x1bh
