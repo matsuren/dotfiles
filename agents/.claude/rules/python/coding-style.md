@@ -1,0 +1,47 @@
+---
+paths:
+  - "**/*.py"
+  - "**/*.pyi"
+---
+
+# Python Coding Style
+
+## Standards
+
+- Follow **PEP 8** conventions
+- Use **type annotations** on all function signatures
+
+## Immutability
+
+Prefer immutable data structures:
+
+```python
+from dataclasses import dataclass
+
+@dataclass(frozen=True)
+class User:
+    name: str
+    email: str
+
+from typing import NamedTuple
+
+class Point(NamedTuple):
+    x: float
+    y: float
+```
+
+## uv
+
+- Use uv instead of python / python3 to run scripts
+
+## Formatting
+
+- **ruff format** for code formatting
+
+## Linting
+
+- **ruff check** for linter
+
+## Type check
+
+- **mypy** or **ty** for type checking

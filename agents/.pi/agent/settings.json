@@ -1,0 +1,14 @@
+{
+  "lastChangelogVersion": "0.67.3",
+  "defaultProvider": "openai-codex",
+  "defaultModel": "gpt-5.4",
+  "enableInstallTelemetry": false,
+  "treeFilterMode": "default",
+  "enabledModels": [
+    "openai-codex/gpt-5.4"
+  ],
+  "defaultThinkingLevel": "medium",
+  "skills": [
+    "~/.claude/skills"
+  ]
+}
