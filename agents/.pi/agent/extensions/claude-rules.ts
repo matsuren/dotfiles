@@ -18,12 +18,18 @@
  */
 
 import * as fs from "node:fs";
+import * as os from "node:os";
 import * as path from "node:path";
 import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
 
 /**
  * Recursively find all .md files in a directory
  */
+type RuleFile = {
+	relativePath: string;
+	path: string;
+};
+
 function findMarkdownFiles(dir: string, basePath: string = ""): string[] {
 	const results: string[] = [];
 
@@ -38,7 +44,7 @@ function findMarkdownFiles(dir: string, basePath: string = ""): string[] {
 
 		if (entry.isDirectory()) {
 			results.push(...findMarkdownFiles(path.join(dir, entry.name), relativePath));
-		} else if (entry.isFile() && entry.name.endsWith(".md")) {
+		} else if (entry.isFile() && entry.name.endsWith(".md") && entry.name !== "README.md") {
 			results.push(relativePath);
 		}
 	}
@@ -46,40 +52,62 @@ function findMarkdownFiles(dir: string, basePath: string = ""): string[] {
 	return results;
 }
 
+function collectRules(dir: string): RuleFile[] {
+	return findMarkdownFiles(dir).map((relativePath) => ({
+		relativePath,
+		path: path.join(dir, relativePath),
+	}));
+}
+
+function formatRuleList(ruleFiles: RuleFile[]): string {
+	return ruleFiles.map((rule) => `- ${rule.relativePath}`).join("\n");
+}
+
 export default function claudeRulesExtension(pi: ExtensionAPI) {
-	let ruleFiles: string[] = [];
-	let rulesDir: string = "";
+	let globalRules: RuleFile[] = [];
+	let projectRules: RuleFile[] = [];
 
-	// Scan for rules on session start
 	pi.on("session_start", async (_event, ctx) => {
-		rulesDir = path.join(ctx.cwd, ".claude", "rules");
-		ruleFiles = findMarkdownFiles(rulesDir);
+		const globalRulesDir = path.join(os.homedir(), ".claude", "rules");
+		const projectRulesDir = path.join(ctx.cwd, ".claude", "rules");
+		globalRules = collectRules(globalRulesDir);
+		projectRules = collectRules(projectRulesDir);
+		const totalRules = globalRules.length + projectRules.length;
 
-		if (ruleFiles.length > 0) {
-			ctx.ui.notify(`Found ${ruleFiles.length} rule(s) in .claude/rules/`, "info");
+		if (totalRules > 0) {
+			ctx.ui.notify(`Found ${totalRules} rule(s) (${globalRules.length} global, ${projectRules.length} project)`, "info");
 		}
 	});
 
-	// Append available rules to system prompt
-	pi.on("before_agent_start", async (event) => {
-		if (ruleFiles.length === 0) {
+	pi.on("before_agent_start", async (event, ctx) => {
+		if (globalRules.length === 0 && projectRules.length === 0) {
 			return;
 		}
 
-		const rulesList = ruleFiles.map((f) => `- .claude/rules/${f}`).join("\n");
+		const sections: string[] = [];
+		const globalRulesDir = path.join(os.homedir(), ".claude", "rules");
+		const projectRulesDir = path.join(ctx.cwd, ".claude", "rules");
+
+		if (globalRules.length > 0) {
+			sections.push(`Global rules (${globalRulesDir}):\n${formatRuleList(globalRules)}`);
+		}
+		if (projectRules.length > 0) {
+			sections.push(`Project rules (${projectRulesDir}):\n${formatRuleList(projectRules)}`);
+		}
 
 		return {
 			systemPrompt:
 				event.systemPrompt +
 				`
 
-## Project Rules
+## Rules
 
-The following project rules are available in .claude/rules/:
+The following rule files are available:
 
-${rulesList}
+${sections.join("\n\n")}
 
-When working on tasks related to these rules, use the read tool to load the relevant rule files for guidance.
+When working on tasks related to these rules, use the read tool to load the relevant files by their exact path under the listed rule directories.
+Prefer project rules when both project and global rules are relevant.
 `,
 		};
 	});
