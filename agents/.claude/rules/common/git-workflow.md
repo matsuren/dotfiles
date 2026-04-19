@@ -1,49 +1,43 @@
 # Git Workflow
 
-## Conventional Commit Message Format
+- Never commit directly to `main` or `master`.
+- Make changes on a branch.
+- For new features, prefer `feature/<name>`.
+- For bug fixes, prefer `fix/<name>`.
+- Use a worktree when the user asks.
+- Keep changes small, safe, and focused.
+- Keep commits atomic.
+- Only commit files you changed in this session.
+- Do not modify unrelated files.
+- Before push or PR, run the repo's canonical validation commands per [testing.md](testing.md).
 
-```
-<type>: <description>
+Never run destructive git commands unless explicitly asked:
 
-<optional body>
-```
+- `git reset --hard`
+- `git clean -fd`
+- `git push --force`
 
-Types: feat, fix, refactor, docs, test, chore, perf, ci
+## Commit Messages
 
-## Pull Request Workflow
+Use conventional commits when making commits:
 
-When creating PRs:
+- Use imperative mood
+- Keep one logical change per commit
+- Use scope when helpful
+- Examples:
+  - feat: add websocket bridge
+  - fix(cli): handle missing file path
+  - feat(api)!: send an email to the customer when a product is shipped
 
-1. Analyze full commit history (not just latest commit)
-2. Use `git diff [base-branch]...HEAD` to see all changes
-3. Draft comprehensive PR summary
-4. Include a concrete test plan with completed items when possible
-5. Run test, format, and check before pushing
-6. Push with `-u` flag if the branch is new
+## Pull Requests
 
-## GitHub PR / Merge via CLI
+When creating a PR:
 
-When a user asks to create a PR, check whether GitHub CLI access is available before assuming it is blocked.
-
-Preferred order:
-
-1. Inspect git remotes with `git remote -v`
-2. Check whether `gh` is installed with `command -v gh`
-3. If `gh` exists, prefer using it through `bash`
-4. If needed, verify auth with `gh auth status`
-
-Typical commands:
-
-```bash
-git push -u origin <branch>
-gh pr create --base main --head <branch> --title "..." --body "..."
-gh pr checks <pr-number> --watch
-gh pr merge <pr-number> --merge --delete-branch
-```
-
-Guidance:
-
-- Do not claim remote / GitHub access is unavailable until you have checked remotes, `gh`, and auth status.
-- If `gh` is unavailable or unauthenticated, say that clearly and stop before pretending the PR was created.
-- If there are untracked local files unrelated to the change, avoid committing them unless the user asks.
-- After merge, confirm the PR URL, CI result, merge commit, and resulting local branch state.
+1. Review the full diff against the base branch.
+2. Summarize the change clearly.
+3. Include a concrete test plan when possible.
+4. Check whether GitHub CLI is available before claiming PR creation is blocked:
+   - `git remote -v`
+   - `command -v gh`
+   - `gh auth status` if needed
+5. Verify the PR is merged before attempting branch cleanup, because the remote branch may already have been auto-deleted.

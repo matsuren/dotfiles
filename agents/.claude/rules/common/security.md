@@ -8,6 +8,7 @@ Before ANY commit:
 - [ ] All user inputs validated
 - [ ] SQL injection prevention (parameterized queries)
 - [ ] XSS prevention (sanitized HTML)
+- [ ] Path traversal prevention for file/path inputs
 - [ ] CSRF protection enabled
 - [ ] Authentication/authorization verified
 - [ ] Rate limiting on all endpoints

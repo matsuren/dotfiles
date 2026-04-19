@@ -1,110 +1,29 @@
-# Code Review Standards
+# Code Review
 
-## Purpose
+Before approving or calling work complete:
 
-Code review ensures quality, security, and maintainability before code is merged. This rule defines when and how to conduct code reviews.
+1. Read the diff.
+2. Confirm validation status per [testing.md](testing.md).
+3. If the change touches auth, permissions, user input, file/path handling, external requests, secrets, or database queries, review [security.md](security.md).
+4. Check:
+   - correctness
+   - tests
+   - docs consistency (README, AGENTS/CLAUDE, examples) when behavior, API, commands, or structure changed
+   - code shape per [coding-style.md](coding-style.md)
+5. Call out findings with severity.
 
-## When to Review
+Severity:
+- CRITICAL: security vulnerability or data-loss risk -> BLOCK
+- HIGH: bug or significant quality issue -> WARN
+- MEDIUM: maintainability concern -> INFO
+- LOW: style or minor suggestion -> NOTE
 
-**MANDATORY review triggers:**
-
-- After writing or modifying code
-- Before any commit to shared branches
-- When security-sensitive code is changed (auth, payments, user data)
-- When architectural changes are made
-- Before merging pull requests
-
-**Pre-Review Requirements:**
-
-Before requesting review, ensure:
-
-- All automated checks (CI/CD) are passing
-- Merge conflicts are resolved
-- Branch is up to date with target branch
-
-## Review Checklist
-
-Before marking code complete:
-
-- [ ] Code is readable and well-named
-- [ ] Functions are focused (<50 lines)
-- [ ] Files are cohesive (<800 lines)
-- [ ] No deep nesting (>4 levels)
-- [ ] Errors are handled explicitly
-- [ ] No hardcoded secrets or credentials
-- [ ] No console.log or debug statements
-- [ ] Tests exist for new functionality
-- [ ] Test coverage meets project expectations
-
-## Security Review Triggers
-
-**Stop and perform an explicit security review when changing:**
-
-- Authentication or authorization code
-- User input handling
-- Database queries
-- File system operations
-- External API calls
-- Cryptographic operations
-- Payment or financial code
-
-## Review Severity Levels
-
-| Level    | Meaning                                  | Action                             |
-| -------- | ---------------------------------------- | ---------------------------------- |
-| CRITICAL | Security vulnerability or data loss risk | **BLOCK** - Must fix before merge  |
-| HIGH     | Bug or significant quality issue         | **WARN** - Should fix before merge |
-| MEDIUM   | Maintainability concern                  | **INFO** - Consider fixing         |
-| LOW      | Style or minor suggestion                | **NOTE** - Optional                |
-
-## Review Workflow
-
-```
-1. Run git diff to understand changes
-2. Check security checklist first
-3. Review code quality checklist
-4. Run relevant tests
-5. Verify coverage or test impact
-6. Fix blocking issues before approval
-```
-
-## Common Issues to Catch
-
-### Security
-
-- Hardcoded credentials (API keys, passwords, tokens)
-- SQL injection (string concatenation in queries)
-- XSS vulnerabilities (unescaped user input)
-- Path traversal (unsanitized file paths)
-- CSRF protection missing
-- Authentication bypasses
-
-### Code Quality
-
-- Large functions (>50 lines) - split into smaller
-- Large files (>800 lines) - extract modules
-- Deep nesting (>4 levels) - use early returns
-- Missing error handling - handle explicitly
-- Mutation patterns - prefer immutable operations
-- Missing tests - add test coverage
-
-### Performance
-
-- N+1 queries - use JOINs or batching
-- Missing pagination - add LIMIT to queries
-- Unbounded queries - add constraints
-- Missing caching - cache expensive operations
-
-## Approval Criteria
-
-- **Approve**: No CRITICAL or HIGH issues
-- **Warning**: Only HIGH issues (merge with caution)
-- **Block**: CRITICAL issues found
-
-## Integration with Other Rules
-
-This rule works with:
-
-- [testing.md](testing.md) - Test coverage requirements
-- [security.md](security.md) - Security checklist
-- [git-workflow.md](git-workflow.md) - Commit standards
+Report both:
+- Validation: COMPLETE, FAILED, or OMITTED
+  - name the canonical checks you identified
+  - name which were run, failed, or omitted
+- Recommendation:
+  - BLOCK if any CRITICAL finding or validation FAILED
+  - WARN if any HIGH finding
+  - REVIEW ONLY if validation is OMITTED
+  - APPROVE otherwise

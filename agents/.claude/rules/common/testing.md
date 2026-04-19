@@ -1,55 +1,15 @@
-# Testing Requirements
+# Testing
 
-## Minimum Test Coverage: 80%
+Before declaring a code change complete, giving final review, or recommending approval:
 
-Test Types (ALL required):
+1. Identify the repo's canonical validation commands from project guidance/config.
+2. Prefer project-native commands; do not assume fixed names like `make check`.
+3. Unless the user explicitly asks to omit full validation, run the repo's full canonical validation commands.
+4. Use targeted checks only for iteration, debugging, or when the user explicitly asks for limited validation.
+5. Report the exact commands run.
+6. If a canonical command was not run, say why.
 
-1. **Unit Tests** - Individual functions, utilities, components
-2. **Integration Tests** - API endpoints, database operations
-3. **E2E Tests** - Critical user flows (framework chosen per language)
-
-## Test-Driven Development
-
-Preferred workflow:
-
-1. Write test first (RED)
-2. Run test - it should FAIL
-3. Write minimal implementation (GREEN)
-4. Run test - it should PASS
-5. Refactor (IMPROVE)
-6. Verify coverage or test impact
-
-## Troubleshooting Test Failures
-
-1. Check test isolation
-2. Verify mocks are correct
-3. Fix implementation, not tests (unless tests are wrong)
-4. Reduce the failing case to the smallest reproducible example when needed
-
-## Test Structure (AAA Pattern)
-
-Prefer Arrange-Act-Assert structure for tests:
-
-```typescript
-test("calculates similarity correctly", () => {
-  // Arrange
-  const vector1 = [1, 0, 0];
-  const vector2 = [0, 1, 0];
-
-  // Act
-  const similarity = calculateCosineSimilarity(vector1, vector2);
-
-  // Assert
-  expect(similarity).toBe(0);
-});
-```
-
-### Test Naming
-
-Use descriptive names that explain the behavior under test:
-
-```typescript
-test("returns empty array when no markets match query", () => {});
-test("throws error when API key is missing", () => {});
-test("falls back to substring search when Redis is unavailable", () => {});
-```
+Validation status:
+- COMPLETE: full canonical validation was run and passed; or no canonical full-validation command exists and relevant focused checks were run and passed.
+- FAILED: a required validation command was run and failed.
+- OMITTED: full canonical validation was not run.
