@@ -1,6 +1,7 @@
 theme = TokyoNight
-font-size = 14.5
+font-size = 14
 font-feature = -calt
+font-family = "Google Sans Code"
 font-family = "Menlo"
 font-family = "Ubuntu Sans Mono"
 font-family = "JetBrains Mono"
