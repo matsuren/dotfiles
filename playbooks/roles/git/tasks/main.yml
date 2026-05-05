@@ -1,0 +1,71 @@
+---
+- name: Install Git packages for Debian/Ubuntu
+  become: true
+  when: ansible_os_family == "Debian"
+  ansible.builtin.apt:
+    name:
+      - git
+      - git-delta
+    state: present
+- name: Install Git packages for macOS
+  when: ansible_os_family == "Darwin"
+  community.general.homebrew:
+    name:
+      - git
+      - git-delta
+    state: present
+- name: Check if delta is installed
+  ansible.builtin.command: delta --version
+  register: delta_check
+  changed_when: false
+  failed_when: false
+- name: Configure global Git identity
+  community.general.git_config:
+    name: "{{ item.name }}"
+    scope: global
+    value: "{{ item.value }}"
+  loop:
+    - name: user.name
+      value: "{{ git_user_name | default('') }}"
+    - name: user.email
+      value: "{{ git_user_email | default('') }}"
+  when: item.value | trim | length > 0
+- name: Configure global Git settings
+  community.general.git_config:
+    name: "{{ item.name }}"
+    scope: global
+    value: "{{ item.value }}"
+  loop:
+    - name: init.defaultBranch
+      value: main
+    - name: merge.conflictstyle
+      value: diff3
+    - name: diff.colorMoved
+      value: default
+    - name: rerere.enabled
+      value: "true"
+    - name: column.ui
+      value: auto
+    - name: branch.sort
+      value: -committerdate
+    - name: rebase.updateRefs
+      value: "true"
+    - name: push.useForceIfIncludes
+      value: "true"
+    - name: alias.push-with-lease
+      value: push --force-with-lease --force-if-includes
+    - name: merge.ff
+      value: "true"
+- name: Configure delta-backed Git settings
+  community.general.git_config:
+    name: "{{ item.name }}"
+    scope: global
+    value: "{{ item.value }}"
+  loop:
+    - name: core.pager
+      value: delta
+    - name: interactive.diffFilter
+      value: delta --color-only
+    - name: delta.navigate
+      value: "true"
+  when: delta_check.rc == 0

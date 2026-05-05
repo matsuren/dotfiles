@@ -19,7 +19,6 @@
         name:
           - build-essential
           - zsh
-          - git
           - curl
           - htop
           - tmux
@@ -52,8 +51,6 @@
           - curl
           - fd
           - fzf
-          - git
-          - git-delta
           - htop
           - node@24
           - ripgrep
