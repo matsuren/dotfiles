@@ -1,0 +1,11 @@
+services:
+  degoog:
+    image: ghcr.io/degoog-org/degoog:latest
+    volumes:
+      - data:/app/data
+    ports:
+      - "4444:4444"
+    restart: unless-stopped
+
+volumes:
+  data:
