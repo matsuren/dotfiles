@@ -1,0 +1,23 @@
+onboarding = false
+
+[theme]
+name = "tokyo-night"
+
+[keys]
+prefix = "ctrl+q"
+split_vertical = 'prefix+%'
+split_horizontal = 'prefix+"'
+# previous_tab = 'alt+h'
+# next_tab = 'alt+l'
+# previous_workspace = 'prefix+ctrl+p'
+# next_workspace = 'prefix+ctrl+n'
+previous_workspace = 'alt+h'
+next_workspace = 'alt+l'
+previous_agent = 'prefix+ctrl+p'
+next_agent = 'prefix+ctrl+n'
+
+[ui]
+sidebar_width = 14
+sidebar_min_width = 12
+sidebar_max_width = 20
+show_agent_labels_on_pane_borders = true
