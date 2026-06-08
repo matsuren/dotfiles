@@ -17,7 +17,7 @@ previous_agent = 'prefix+ctrl+p'
 next_agent = 'prefix+ctrl+n'
 
 [ui]
-sidebar_width = 14
-sidebar_min_width = 12
+sidebar_width = 12
+sidebar_min_width = 8
 sidebar_max_width = 20
 show_agent_labels_on_pane_borders = true
