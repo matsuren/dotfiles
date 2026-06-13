@@ -1,32 +1,7 @@
-# Security Guidelines
+# Security
 
-## Mandatory Security Checks
+- Never hardcode secrets; use environment variables or a secret manager.
+- Never pass user input unsanitized to shell commands, SQL queries, or file paths.
 
-Before ANY commit:
-
-- [ ] No hardcoded secrets (API keys, passwords, tokens)
-- [ ] All user inputs validated
-- [ ] SQL injection prevention (parameterized queries)
-- [ ] XSS prevention (sanitized HTML)
-- [ ] Path traversal prevention for file/path inputs
-- [ ] CSRF protection enabled
-- [ ] Authentication/authorization verified
-- [ ] Rate limiting on all endpoints
-- [ ] Error messages don't leak sensitive data
-
-## Secret Management
-
-- NEVER hardcode secrets in source code
-- ALWAYS use environment variables or a secret manager
-- Validate that required secrets are present at startup
-- Rotate any secrets that may have been exposed
-
-## Security Response Protocol
-
-If a security issue is found:
-
-1. STOP immediately
-2. Assess severity and impact
-3. Fix CRITICAL issues before continuing
-4. Rotate any exposed secrets
-5. Review the codebase for similar issues
+If a security issue is found: STOP, assess severity, fix CRITICAL issues first, rotate any
+exposed secrets, scan for similar issues. For a full audit, run `/security-review`.
