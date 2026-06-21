@@ -18,6 +18,7 @@
 - One concept, one place. Things that change together should live together in one source of truth. Adding a new case should require exactly one edit.
 - Keep control flow shallow. Prefer guard clauses and early returns over nested if/else blocks. Use helper functions only when they clarify non-trivial logic.
 - Prefer inlining trivial logic. Keep obvious one-off snippets inline, even with small duplication. Extract a helper only when it clarifies a meaningful concept, protects a shared invariant, or removes non-trivial duplication.
+- Inline single-use constants. Don't name a constant used in only one place; put the literal at its point of use, with a descriptive local name if it aids clarity.
 - Keep functions reusable by passing only what they need. Use explicit values or small cohesive objects, not broad caller-specific containers.
 - Keep helpers local by default. If only one file uses a helper, keep it there. Move it to shared code only when multiple files need it or the boundary is clearly stable.
 - Define variables close to first use. Keep variable lifetimes short. Avoid early initialization and long-lived mutable locals.
