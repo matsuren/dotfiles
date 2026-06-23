@@ -8,17 +8,20 @@
 - Do not weaken checks to make them pass. Do not delete, skip, or loosen failing tests. Do not silence lint or type errors with ignores. Fix the cause or flag the failure.
 - Before claiming completion, re-read the full diff against the original request. Check for missed requirements, unintended changes, leftover debug code, and mistakes.
 - Write for the reader. Optimize for the next person reading and debugging, not for density or cleverness.
+- Fix root causes, not symptoms. Trace a bug to the shared function and fix it once where all callers route through. Check sibling callers before patching a single call site.
 
 # Coding Style
 
 - Simplicity first. Write the minimum code that solves the problem. Keep responsibilities narrow and interfaces small. Add abstractions only when they clearly reduce duplication, coupling, or testing pain.
+- Don't reinvent what exists. Check in order before writing custom code, and stop at the first that holds. Skip it (YAGNI), reuse this codebase, use the standard library, use a native platform feature, use an installed dependency. Add a new dependency only when none apply and a few lines won't do.
+- Deletion over addition. Prefer removing code to adding it. The smallest correct change wins.
 - Default to no comments. Write clear code instead. Use brief comments only for non-obvious intent, tradeoffs, constraints, or why a simpler-looking approach is wrong. Never narrate what the code does.
 - Prefer functions over classes. Use a class only when shared state is needed.
 - Prefer descriptive, domain-revealing names for public APIs and reusable code. Use short local names only when the scope is small and the meaning is obvious.
 - One concept, one place. Things that change together should live together in one source of truth. Adding a new case should require exactly one edit.
 - Keep control flow shallow. Prefer guard clauses and early returns over nested if/else blocks. Use helper functions only when they clarify non-trivial logic.
 - Prefer inlining trivial logic. Keep obvious one-off snippets inline, even with small duplication. Extract a helper only when it clarifies a meaningful concept, protects a shared invariant, or removes non-trivial duplication.
-- Inline single-use constants. Don't name a constant used in only one place; put the literal at its point of use, with a descriptive local name if it aids clarity.
+- Inline single-use constants. Don't name a constant used in only one place. Put the literal at its point of use, with a descriptive local name if it aids clarity.
 - Keep functions reusable by passing only what they need. Use explicit values or small cohesive objects, not broad caller-specific containers.
 - Keep helpers local by default. If only one file uses a helper, keep it there. Move it to shared code only when multiple files need it or the boundary is clearly stable.
 - Define variables close to first use. Keep variable lifetimes short. Avoid early initialization and long-lived mutable locals.
