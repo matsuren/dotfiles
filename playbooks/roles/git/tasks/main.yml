@@ -13,6 +13,7 @@
     name:
       - git
       - git-delta
+      - difftastic
     state: present
 - name: Check if delta is installed
   ansible.builtin.command: delta --version
@@ -69,3 +70,21 @@
     - name: delta.navigate
       value: "true"
   when: delta_check.rc == 0
+- name: Check if Difftastic is installed
+  ansible.builtin.command: difft --version
+  register: difftastic_check
+  changed_when: false
+  failed_when: false
+- name: Configure Difftastic Git aliases
+  community.general.git_config:
+    name: "{{ item.name }}"
+    scope: global
+    value: "{{ item.value }}"
+  loop:
+    - name: alias.ddiff
+      value: "-c diff.external=difft diff"
+    - name: alias.dshow
+      value: "-c diff.external=difft show --ext-diff"
+    - name: alias.dlog
+      value: "-c diff.external=difft log --ext-diff"
+  when: difftastic_check.rc == 0
